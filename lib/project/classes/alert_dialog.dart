@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+import 'package:touch2truth/project/localization/methods.dart';
 
 Future<void> iosDialog(BuildContext context, String content, String action,
         Function onAction) =>

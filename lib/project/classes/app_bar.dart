@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+import 'package:touch2truth/project/localization/methods.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/app_pages/input.dart';
+import 'package:touch2truth/project/app_pages/input.dart';
 
 import 'constants.dart';
 

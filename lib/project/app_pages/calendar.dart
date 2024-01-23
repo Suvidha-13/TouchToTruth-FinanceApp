@@ -6,15 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/classes/alert_dialog.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/category_item.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/custom_toast.dart';
-import 'package:money_assistant_2608/project/classes/input_model.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+import 'package:touch2truth/project/classes/alert_dialog.dart';
+import 'package:touch2truth/project/classes/app_bar.dart';
+import 'package:touch2truth/project/classes/category_item.dart';
+import 'package:touch2truth/project/classes/constants.dart';
+import 'package:touch2truth/project/classes/custom_toast.dart';
+import 'package:touch2truth/project/classes/input_model.dart';
+import 'package:touch2truth/project/database_management/shared_preferences_service.dart';
+import 'package:touch2truth/project/database_management/sqflite_services.dart';
+import 'package:touch2truth/project/localization/methods.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'dart:io' show Platform;
 
@@ -450,52 +450,120 @@ class _BalanceState extends State<Balance> {
       }
     }
     Widget summaryFrame(String type, double amount, color) => Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // this widget will never overflow
-            Text(
-              getTranslated(context, type)!,
-              style: TextStyle(
-                  color: color,
-                  fontSize: 15.sp,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold),
-            ),
-            Text(format(amount.toDouble()) + ' ' + currency,
-                style: GoogleFonts.aBeeZee(
-                    color: color,
-                    fontSize: (format(amount.toDouble()).length > 19)
-                        ? 11.5.sp
-                        : format(amount.toDouble()).length > 14
-                            ? 14.sp
-                            : 18.sp,
-                    fontStyle: FontStyle.italic,
-                    fontWeight: FontWeight.bold),
-                overflow: TextOverflow.ellipsis)
-          ],
-        );
-    return Container(
-      color: Colors.white54,
-      height: 69.h,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            summaryFrame(
-              'INCOME',
-              income,
-              Colors.lightGreen,
-            ),
-            Padding(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          getTranslated(context, type)!,
+          style: TextStyle(
+              color: color,
+              fontSize: 15.sp,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold),
+        ),
+        Text(format(amount.toDouble()) + ' ' + currency,
+            style: GoogleFonts.aBeeZee(
+                color: color,
+                fontSize: (format(amount.toDouble()).length > 19)
+                    ? 11.5.sp
+                    : format(amount.toDouble()).length > 14
+                    ? 14.sp
+                    : 18.sp,
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis)
+      ],
+    );
+    return Expanded( // Wrap with Expanded to take available vertical space
+      child: Container(
+        color: Colors.white54,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              summaryFrame(
+                'INCOME',
+                income,
+                Colors.lightGreen,
+              ),
+              Padding(
                 padding: EdgeInsets.symmetric(horizontal: 5.w),
-                child: summaryFrame('EXPENSE', expense, red)),
-            Flexible(
-                child: summaryFrame('TOTAL BALANCE', balance, Colors.black)),
-          ],
+                child: summaryFrame('EXPENSE', expense, red),
+              ),
+              Flexible(
+                child: summaryFrame('TOTAL BALANCE', balance, Colors.black),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+//
+// class _BalanceState extends State<Balance> {
+//   @override
+//   Widget build(BuildContext context) {
+//     double income = 0, expense = 0, balance = 0;
+//     if (widget.events != null) {
+//       for (int i = 0; i < widget.events!.length; i++) {
+//         if (widget.events![i].type == 'Income') {
+//           income = income + widget.events![i].amount;
+//         } else {
+//           expense = expense + widget.events![i].amount;
+//         }
+//         balance = income - expense;
+//       }
+//     }
+//     Widget summaryFrame(String type, double amount, color) => Column(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: [
+//             // this widget will never overflow
+//             Text(
+//               getTranslated(context, type)!,
+//               style: TextStyle(
+//                   color: color,
+//                   fontSize: 15.sp,
+//                   fontStyle: FontStyle.italic,
+//                   fontWeight: FontWeight.bold),
+//             ),
+//             Text(format(amount.toDouble()) + ' ' + currency,
+//                 style: GoogleFonts.aBeeZee(
+//                     color: color,
+//                     fontSize: (format(amount.toDouble()).length > 19)
+//                         ? 11.5.sp
+//                         : format(amount.toDouble()).length > 14
+//                             ? 14.sp
+//                             : 18.sp,
+//                     fontStyle: FontStyle.italic,
+//                     fontWeight: FontWeight.bold),
+//                 overflow: TextOverflow.ellipsis)
+//           ],
+//         );
+//     return Container(
+//       color: Colors.white54,
+//       height: 69.h,
+//       child: Padding(
+//         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             summaryFrame(
+//               'INCOME',
+//               income,
+//               Colors.lightGreen,
+//             ),
+//             Padding(
+//                 padding: EdgeInsets.symmetric(horizontal: 5.w),
+//                 child: summaryFrame('EXPENSE', expense, red)),
+//             Flexible(
+//                 child: summaryFrame('TOTAL BALANCE', balance, Colors.black)),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

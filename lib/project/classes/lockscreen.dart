@@ -8,8 +8,8 @@ import 'package:flutter_screen_lock/configurations/secrets_config.dart';
 import 'package:flutter_screen_lock/input_controller.dart';
 import 'package:flutter_screen_lock/screen_lock.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+import 'package:touch2truth/project/database_management/shared_preferences_service.dart';
+import 'package:touch2truth/project/localization/methods.dart';
 import 'package:provider/provider.dart';
 
 import '../provider.dart';

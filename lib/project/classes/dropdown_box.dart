@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
-import 'package:money_assistant_2608/project/provider.dart';
+import 'package:touch2truth/project/database_management/shared_preferences_service.dart';
+import 'package:touch2truth/project/localization/methods.dart';
+import 'package:touch2truth/project/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'constants.dart';

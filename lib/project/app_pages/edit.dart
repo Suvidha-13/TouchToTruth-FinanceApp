@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:money_assistant_2608/project/classes/app_bar.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/input_model.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+import 'package:touch2truth/project/classes/app_bar.dart';
+import 'package:touch2truth/project/classes/constants.dart';
+import 'package:touch2truth/project/classes/input_model.dart';
+import 'package:touch2truth/project/localization/methods.dart';
 import 'input.dart';
 
 class Edit extends StatelessWidget {

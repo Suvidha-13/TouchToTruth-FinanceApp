@@ -2,11 +2,11 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:money_assistant_2608/project/classes/alert_dialog.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
-import 'package:money_assistant_2608/project/app_pages/input.dart';
-import 'package:money_assistant_2608/project/provider.dart';
+import 'package:touch2truth/project/classes/alert_dialog.dart';
+import 'package:touch2truth/project/database_management/shared_preferences_service.dart';
+import 'package:touch2truth/project/localization/methods.dart';
+import 'package:touch2truth/project/app_pages/input.dart';
+import 'package:touch2truth/project/provider.dart';
 import 'package:provider/provider.dart';
 
 import 'category_item.dart';

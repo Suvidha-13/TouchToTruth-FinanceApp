@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
+import 'package:touch2truth/project/database_management/shared_preferences_service.dart';
 
 import 'category_item.dart';
 import 'input_model.dart';

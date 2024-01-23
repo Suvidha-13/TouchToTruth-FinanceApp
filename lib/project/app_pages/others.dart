@@ -6,15 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:intl/intl.dart';
-import 'package:money_assistant_2608/project/app_pages/select_date_format.dart';
-import 'package:money_assistant_2608/project/app_pages/select_language.dart';
-import 'package:money_assistant_2608/project/auth_pages/user_account.dart';
-import 'package:money_assistant_2608/project/classes/alert_dialog.dart';
-import 'package:money_assistant_2608/project/classes/constants.dart';
-import 'package:money_assistant_2608/project/classes/custom_toast.dart';
-import 'package:money_assistant_2608/project/database_management/shared_preferences_services.dart';
-import 'package:money_assistant_2608/project/database_management/sqflite_services.dart';
-import 'package:money_assistant_2608/project/localization/methods.dart';
+import 'package:touch2truth/project/app_pages/select_date_format.dart';
+import 'package:touch2truth/project/app_pages/select_language.dart';
+import 'package:touch2truth/project/auth_pages/user_account.dart';
+import 'package:touch2truth/project/classes/alert_dialog.dart';
+import 'package:touch2truth/project/classes/constants.dart';
+import 'package:touch2truth/project/classes/custom_toast.dart';
+import 'package:touch2truth/project/database_management/shared_preferences_service.dart';
+import 'package:touch2truth/project/database_management/sqflite_services.dart';
+import 'package:touch2truth/project/localization/methods.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:io' show Platform;
@@ -54,7 +54,7 @@ class Other extends StatelessWidget {
                     width: 20.w,
                   ),
                   Text(
-                    '${getTranslated(context, 'Hi you')!}!',
+                    '${getTranslated(context, 'Hi')!}!',
                     style: TextStyle(fontSize: 30.sp),
                   ),
                   // Spacer(),
@@ -142,8 +142,8 @@ class _SettingsState extends State<Settings> {
       getTranslated(context, 'Reset All Categories') ?? 'Reset All Categories',
       getTranslated(context, 'Delete All Data') ?? 'Delete All Data',
       // getTranslated(context, 'Enable Passcode') ?? 'Enable Passcode',
-      getTranslated(context, 'Share Friends') ?? 'Share Friends',
-      getTranslated(context, 'Rate App') ?? 'Rate App',
+      // getTranslated(context, 'Share Friends') ?? 'Share Friends',
+      // getTranslated(context, 'Rate App') ?? 'Rate App',
     ];
 
     return ListView.builder(
@@ -213,14 +213,16 @@ class _SettingsState extends State<Settings> {
               //   onPasscodeSwitched();
               // }
               else if (int == 6) {
-                Share.share(
-                    'https://apps.apple.com/us/app/mmas-money-tracker-bookkeeper/id1582638369');
-              } else {
+                // Share.share(
+                //     // 'https://apps.apple.com/us/app/mmas-money-tracker-bookkeeper/id1582638369');
+                //     // 'https://apps.apple.com/us/app/your-app-name/idyour-app-id'
+                // );
+            } else {
                 final InAppReview inAppReview = InAppReview.instance;
                 await inAppReview.openStoreListing(
                   appStoreId: Platform.isIOS
                       ? '1582638369'
-                      : 'com.mmas.money_assistant_2608',
+                      : 'com.touch2truth.Touch2Truth',
                 );
               }
             },

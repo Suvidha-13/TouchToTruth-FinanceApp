@@ -17,13 +17,12 @@ class Language {
       this.currencyCode,
       this.currencyName);
   static List<Language> languageList = [
-    Language(
-        1, "🇺🇸", "English", "en", 'US', '\$', 'USD', 'United States Dollar'),
+    Language(1, "🇮🇳", "हिन्दी", "hi", 'IN', '₹', 'INR', 'Indian Rupee'),
     // Language(2, "🇸🇦", "العربية", "ar", 'SA', 'R'),
-    Language(3, "🇩🇪", "Deutsch", "de", 'DE', '€', 'EUR', 'Euro'),
-    Language(4, "🇪🇸", "Español", "es", 'ES', '€', 'EUR', 'Euro'),
-    Language(5, "🇫🇷", "Français", "fr", 'FR', '€', 'EUR', 'Euro'),
-    Language(6, "🇮🇳", "हिन्दी", "hi", 'IN', '₹', 'INR', 'Indian Rupee'),
+    Language(3, "🇺🇸", "English", "en", 'US', '\$', 'USD', 'United States Dollar'),
+    Language(4, "🇩🇪", "Deutsch", "de", 'DE', '€', 'EUR', 'Euro'),
+    Language(5, "🇪🇸", "Español", "es", 'ES', '€', 'EUR', 'Euro'),
+    Language(6, "🇫🇷", "Français", "fr", 'FR', '€', 'EUR', 'Euro'),
     Language(7, "🇯🇵", "日本語", "ja", 'JP', '¥', 'JPY', 'Japanese Yen'),
     Language(8, "🇰🇷", "한국어", "ko", 'KR', '₩', 'KRW', 'South Korean Won'),
     Language(9, "🇵🇹", "Português", "pt", 'PT', '€', 'EUR', 'Euro'),

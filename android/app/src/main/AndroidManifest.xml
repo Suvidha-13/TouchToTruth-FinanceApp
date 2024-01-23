@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mmas.money_assistant_2608">
+    package="com.touch2truth.Touch2Truth">
    <application
-        android:label="MMAS"
+        android:label="Touch2Truth"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

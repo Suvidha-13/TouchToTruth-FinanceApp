@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -28,8 +27,8 @@ class SignIn extends StatelessWidget {
       top: Radius.circular(20.0),
     );
     return FlutterLogin(
-      title: 'MMAS',
-      logo: 'Hi!',
+      title: 'Touch2Truth',
+      logo: AssetImage('assets/images/logo.png'),
       onSignup: _authenticateUsers,
       onLogin: _authenticateUsers,
       onRecoverPassword: _onRecoverPassword,
@@ -38,22 +37,22 @@ class SignIn extends StatelessWidget {
             context, MaterialPageRoute(builder: (context) => Home()));
       },
       messages: LoginMessages(
-        userHint: 'User',
-        passwordHint: 'Pass',
-        confirmPasswordHint: 'Confirm',
+        userHint: 'Email',
+        passwordHint: 'Password',
+        confirmPasswordHint: 'Confirm Password',
         loginButton: 'LOG IN',
         signupButton: 'REGISTER',
-        forgotPasswordButton: 'Forgot huh?',
+        forgotPasswordButton: 'Forgot Password?',
         recoverPasswordButton: 'HELP ME',
         goBackButton: 'GO BACK',
         confirmPasswordError: 'Not match!',
-        recoverPasswordDescription: 'recoverPasswordDescription',
-        recoverPasswordSuccess: 'Password rescued successfully',
+        recoverPasswordDescription: 'Recover Password',
+        recoverPasswordSuccess: 'Password recovered successfully',
       ),
       loginProviders: <LoginProvider>[
         LoginProvider(
           icon: FontAwesomeIcons.google,
-          label: 'Google',
+          // label: 'Google',
           callback: () async {
             print('start google sign in');
             await Future.delayed(Duration(seconds: 1));
@@ -63,7 +62,7 @@ class SignIn extends StatelessWidget {
         ),
         LoginProvider(
           icon: FontAwesomeIcons.facebookF,
-          label: 'Facebook',
+          // label: 'Facebook',
           callback: () async {
             print('start facebook sign in');
             await Future.delayed(Duration(seconds: 1));
@@ -74,9 +73,9 @@ class SignIn extends StatelessWidget {
         LoginProvider(
           icon: FontAwesomeIcons.linkedinIn,
           callback: () async {
-            print('start linkdin sign in');
+            print('start linkedin sign in');
             await Future.delayed(Duration(seconds: 1));
-            print('stop linkdin sign in');
+            print('stop linkedin sign in');
             return null;
           },
         ),
@@ -91,13 +90,14 @@ class SignIn extends StatelessWidget {
         ),
       ],
       theme: LoginTheme(
-        primaryColor: Colors.teal,
+        primaryColor: Colors.lightBlue.shade50,
         accentColor: Colors.yellow,
         errorColor: Colors.deepOrange,
         titleStyle: TextStyle(
-          color: Colors.greenAccent,
-          fontFamily: 'Quicksand',
-          letterSpacing: 4,
+          fontStyle: FontStyle.italic,
+          color: Colors.blue.shade900,
+          fontFamily: 'Ariel',
+          letterSpacing: 2,
         ),
         bodyStyle: TextStyle(
           fontStyle: FontStyle.italic,
@@ -105,14 +105,14 @@ class SignIn extends StatelessWidget {
         ),
         textFieldStyle: TextStyle(
           color: Colors.orange,
-          shadows: [Shadow(color: Colors.yellow, blurRadius: 2)],
+          shadows: [Shadow(color: Colors.red.shade800, blurRadius: 2)],
         ),
         buttonStyle: TextStyle(
           fontWeight: FontWeight.w800,
           color: Colors.yellow,
         ),
         cardTheme: CardTheme(
-          color: Colors.yellow.shade100,
+          color: Colors.lightBlue.shade100,
           elevation: 5,
           margin: EdgeInsets.only(top: 15),
           shape: ContinuousRectangleBorder(
@@ -124,7 +124,7 @@ class SignIn extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
           errorStyle: TextStyle(
             backgroundColor: Colors.orange,
-            color: Colors.white,
+            color: Colors.black87,
           ),
           labelStyle: TextStyle(fontSize: 12),
           enabledBorder: UnderlineInputBorder(
@@ -136,7 +136,7 @@ class SignIn extends StatelessWidget {
             borderRadius: inputBorder,
           ),
           errorBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.red.shade700, width: 7),
+            borderSide: BorderSide(color: Colors.black, width: 7),
             borderRadius: inputBorder,
           ),
           focusedErrorBorder: UnderlineInputBorder(
@@ -150,8 +150,8 @@ class SignIn extends StatelessWidget {
         ),
         buttonTheme: LoginButtonTheme(
           splashColor: Colors.purple,
-          backgroundColor: Colors.pinkAccent,
-          highlightColor: Colors.lightGreen,
+          backgroundColor: Colors.lightBlue.shade800,
+          highlightColor: Colors.blue,
           elevation: 9.0,
           highlightElevation: 6.0,
           shape: BeveledRectangleBorder(

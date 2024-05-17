@@ -10,7 +10,7 @@ class SignIn extends StatelessWidget {
   //   return Future.delayed(Duration(seconds: 1)).then((_) => null);
   // }
 
-  Future<String?>? _authenticateUsers(dynamic data) {
+  Future<String?>? _authenticateUsers(LoginData data) {
     print('authenticate users');
     return Future.delayed(Duration(seconds: 1)).then((_) => null);
   }
@@ -29,7 +29,7 @@ class SignIn extends StatelessWidget {
     return FlutterLogin(
       title: 'Touch2Truth',
       logo: AssetImage('assets/images/logo.png'),
-      onSignup: _authenticateUsers,
+      // onSignup: _authenticateUsers,
       onLogin: _authenticateUsers,
       onRecoverPassword: _onRecoverPassword,
       onSubmitAnimationCompleted: () {

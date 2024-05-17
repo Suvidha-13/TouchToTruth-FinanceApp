@@ -52,27 +52,28 @@ Future<void> iosDialog(BuildContext context, String content, String action,
           );
         });
 
-Future<void> androidDialog(BuildContext context, String content, String action,
-        Function onAction) =>
+Future<void> androidDialog(BuildContext context, String content, String action, Function onAction) =>
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(getTranslated(context, 'Please Confirm')!),
-            content: Text(
-                getTranslated(context, content) ?? content),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    onAction();
-                    Navigator.pop(context);
-                  },
-                  child: Text(getTranslated(context, 'Cancel') ?? 'Cancel')),
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(getTranslated(context, action) ?? action))
-            ],
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(getTranslated(context, 'Please Confirm')!),
+          content: Text(getTranslated(context, content) ?? content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(getTranslated(context, 'Cancel') ?? 'Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                onAction(); // Call onAction callback before popping the dialog
+                Navigator.pop(context);
+              },
+              child: Text(getTranslated(context, action) ?? action),
+            ),
+          ],
+        );
+      },
+    );

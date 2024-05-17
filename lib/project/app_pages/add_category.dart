@@ -11,7 +11,6 @@ import 'package:touch2truth/project/database_management/shared_preferences_servi
 import 'package:touch2truth/project/localization/methods.dart';
 import 'package:touch2truth/project/provider.dart';
 import 'package:provider/provider.dart';
-
 import 'select_icon.dart';
 
 class AddCategory extends StatelessWidget {
@@ -24,15 +23,15 @@ class AddCategory extends StatelessWidget {
       _formKey5 = GlobalKey<FormState>(debugLabel: '_formKey5');
   AddCategory(
       {this.contextExEdit,
-      this.contextEx,
-      this.contextInEdit,
-      this.contextIn,
-      required this.type,
-      required this.appBarTitle,
-      this.categoryName,
-      this.categoryIcon,
-      this.parentItem,
-      this.description});
+        this.contextEx,
+        this.contextInEdit,
+        this.contextIn,
+        required this.type,
+        required this.appBarTitle,
+        this.categoryName,
+        this.categoryIcon,
+        this.parentItem,
+        this.description});
 
   void unFocusNode(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -61,12 +60,12 @@ class AddCategory extends StatelessWidget {
                       this.categoryName == null
                           ? null
                           : getTranslated(context, this.categoryName!) ??
-                              this.categoryName,
+                          this.categoryName,
                       this.categoryIcon),
                   // Hide ParentCategoryCard when either type is Income or users press on parent category
                   // Fix this? why not (this.categoryName == null && this.parentCategory != null)
                   this.type == 'Income' ||
-                          (this.categoryName != null && this.parentItem == null)
+                      (this.categoryName != null && this.parentItem == null)
                       ? SizedBox()
                       : ParentCategoryCard(this.parentItem),
                   SizedBox(
@@ -77,7 +76,7 @@ class AddCategory extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 90.h),
                       child: Save(
                           formKey:
-                              this.type == 'Income' ? _formKey4 : _formKey5,
+                          this.type == 'Income' ? _formKey4 : _formKey5,
                           contextEx: this.contextEx,
                           contextExEdit: this.contextExEdit,
                           contextIn: this.contextIn,
@@ -151,8 +150,8 @@ class _CategoryNameState extends State<CategoryName> {
                 } else {
                   List<CategoryItem> expenseItems = [];
                   sharedPrefs.getAllExpenseItemsLists().forEach(
-                      (parentExpenseItem) => parentExpenseItem.forEach(
-                          (expenseItem) => expenseItems.add(expenseItem)));
+                          (parentExpenseItem) => parentExpenseItem.forEach(
+                              (expenseItem) => expenseItems.add(expenseItem)));
                   for (CategoryItem expenseItem in expenseItems) {
                     if (categoryNameInput == expenseItem.text) {
                       return true;
@@ -179,10 +178,10 @@ class _CategoryNameState extends State<CategoryName> {
                   fontWeight: FontWeight.normal),
               suffixIcon: categoryNameController.text.length > 0
                   ? IconButton(
-                      icon: Icon(Icons.clear),
-                      onPressed: () {
-                        categoryNameController.clear();
-                      })
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    categoryNameController.clear();
+                  })
                   : SizedBox(),
               icon: Selector<ChangeCategory, IconData?>(
                   selector: (_, provider) => provider.selectedCategoryIcon,
@@ -190,10 +189,10 @@ class _CategoryNameState extends State<CategoryName> {
                     return GestureDetector(
                       onTap: () async {
                         IconData? selectedIcon = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        SelectIcon(widget.type))) ??
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SelectIcon(widget.type))) ??
                             selectedCategoryIcon;
 
                         context
@@ -218,7 +217,7 @@ class _CategoryNameState extends State<CategoryName> {
                           Text(
                             'select icon',
                             style:
-                                TextStyle(fontSize: 11, color: Colors.blueGrey),
+                            TextStyle(fontSize: 11, color: Colors.blueGrey),
                           )
                         ],
                       ),
@@ -276,16 +275,16 @@ class _ParentCategoryCardState extends State<ParentCategoryCard> {
                         getTranslated(context, selectedParentItem.text) ??
                             selectedParentItem.text,
                         style: selectedParentItem.text ==
-                                getTranslated(context, 'Parent category')!
+                            getTranslated(context, 'Parent category')!
                             ? TextStyle(
-                                fontSize: 22.sp,
-                                color: grey,
-                                fontStyle: FontStyle.italic,
-                              )
+                          fontSize: 22.sp,
+                          color: grey,
+                          fontStyle: FontStyle.italic,
+                        )
                             : TextStyle(
-                                fontSize: 22.sp,
-                                color: red,
-                                fontWeight: FontWeight.bold),
+                            fontSize: 22.sp,
+                            color: red,
+                            fontWeight: FontWeight.bold),
                       ),
                       Spacer(),
                       Icon(
@@ -339,17 +338,17 @@ class _DescriptionState extends State<Description> {
               decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText:
-                      getTranslated(context, 'Description') ?? 'Description',
+                  getTranslated(context, 'Description') ?? 'Description',
                   hintStyle: GoogleFonts.cousine(
                     fontSize: 21.5.sp,
                     fontStyle: FontStyle.italic,
                   ),
                   suffixIcon: descriptionController.text.length > 0
                       ? IconButton(
-                          icon: Icon(Icons.clear),
-                          onPressed: () {
-                            descriptionController.clear();
-                          })
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        descriptionController.clear();
+                      })
                       : SizedBox(),
                   icon: Padding(
                     padding: EdgeInsets.only(right: 10.w),
@@ -373,14 +372,14 @@ class Save extends StatefulWidget {
   final CategoryItem? parentItem;
   const Save(
       {required this.formKey,
-      this.contextEx,
-      this.contextExEdit,
-      this.contextIn,
-      this.contextInEdit,
-      this.categoryName,
-      this.categoryIcon,
-      this.parentItem,
-      this.description});
+        this.contextEx,
+        this.contextExEdit,
+        this.contextIn,
+        this.contextInEdit,
+        this.categoryName,
+        this.categoryIcon,
+        this.parentItem,
+        this.description});
 
   @override
   _SaveState createState() => _SaveState();
@@ -410,7 +409,7 @@ class _SaveState extends State<Save> {
 
         void updateCategory() {
           Provider.of<ChangeExpenseItemEdit>(widget.contextExEdit!,
-                  listen: false)
+              listen: false)
               .getAllExpenseItems();
           Provider.of<ChangeExpenseItem>(widget.contextEx!, listen: false)
               .getAllExpenseItems();
@@ -433,7 +432,7 @@ class _SaveState extends State<Save> {
               Icons.category_outlined));
           sharedPrefs.saveItems('income items', incomeItems);
           Provider.of<ChangeIncomeItemEdit>(widget.contextInEdit!,
-                  listen: false)
+              listen: false)
               .getIncomeItems();
           if (widget.contextIn != null) {
             Provider.of<ChangeIncomeItem>(widget.contextIn!, listen: false)
@@ -445,7 +444,7 @@ class _SaveState extends State<Save> {
 
           if ((widget.categoryName == null) && (widget.parentItem == null)) {
             CategoryItem item =
-                categoryItem(finalCategoryIcon ?? Icons.category_outlined);
+            categoryItem(finalCategoryIcon ?? Icons.category_outlined);
             print('add expense');
             if (finalParent!.text ==
                 getTranslated(context, 'Parent category')!) {
@@ -471,7 +470,7 @@ class _SaveState extends State<Save> {
                   widget.description != finalDescription) {
                 print('something changed');
                 List<CategoryItem> items =
-                    sharedPrefs.getItems(widget.categoryName!);
+                sharedPrefs.getItems(widget.categoryName!);
                 items.removeAt(0);
                 items.insert(
                     0, categoryItem(finalCategoryIcon ?? widget.categoryIcon!));
@@ -483,7 +482,7 @@ class _SaveState extends State<Save> {
                       sharedPrefs.parentExpenseItemNames;
 
                   parentExpenseItemNames.removeWhere((parentExpenseItemName) =>
-                      widget.categoryName == parentExpenseItemName);
+                  widget.categoryName == parentExpenseItemName);
                   parentExpenseItemNames.insert(0, finalCategoryName);
                   sharedPrefs.parentExpenseItemNames = parentExpenseItemNames;
                 }
@@ -502,13 +501,13 @@ class _SaveState extends State<Save> {
                 }
 
                 List<CategoryItem> items =
-                    sharedPrefs.getItems(widget.parentItem!.text);
+                sharedPrefs.getItems(widget.parentItem!.text);
                 items.removeWhere((item) => item.text == widget.categoryName);
 
                 if (finalParent.text != widget.parentItem!.text) {
                   print('edit parent of expense category');
                   List<CategoryItem> itemsMovedTo =
-                      sharedPrefs.getItems(finalParent.text);
+                  sharedPrefs.getItems(finalParent.text);
                   itemsAdd(itemsMovedTo);
                   sharedPrefs.saveItems(finalParent.text, itemsMovedTo);
                 } else {
@@ -533,7 +532,7 @@ class _SaveState extends State<Save> {
           saveCategory: saveCategoryFunction,
           categoryName: widget.categoryName,
           parentExpenseItem:
-              widget.parentItem == null ? null : widget.parentItem!.text,
+          widget.parentItem == null ? null : widget.parentItem!.text,
           contextEx: widget.contextEx,
           contextExEdit: widget.contextExEdit,
           contextIn: widget.contextIn,

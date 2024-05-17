@@ -1,5 +1,4 @@
 import 'dart:core';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -212,19 +211,19 @@ class _SettingsState extends State<Settings> {
               // else if (int == 4) {
               //   onPasscodeSwitched();
               // }
-              else if (int == 6) {
+              // else if (int == 6) {
                 // Share.share(
-                //     // 'https://apps.apple.com/us/app/mmas-money-tracker-bookkeeper/id1582638369');
+                //     // 'https://apps.apple.com/us/app/touch2truth/id1582638369');
                 //     // 'https://apps.apple.com/us/app/your-app-name/idyour-app-id'
                 // );
-            } else {
-                final InAppReview inAppReview = InAppReview.instance;
-                await inAppReview.openStoreListing(
-                  appStoreId: Platform.isIOS
-                      ? '1582638369'
-                      : 'com.touch2truth.Touch2Truth',
-                );
-              }
+            // } else {
+            //     final InAppReview inAppReview = InAppReview.instance;
+            //     await inAppReview.openStoreListing(
+            //       appStoreId: Platform.isIOS
+            //           ? '1582638369'
+            //           : 'com.touch2truth.Touch2Truth',
+            //     );
+            //   }
             },
             child: Column(
               children: [

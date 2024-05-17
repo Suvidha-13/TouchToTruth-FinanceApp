@@ -16,6 +16,7 @@ abstract class DB {
     try {
       var databasesPath = await getDatabasesPath();
       String _path = p.join(databasesPath, 'money_crud.db');
+      print('Database path: $_path'); // Print the database path
       _db = await openDatabase(_path, version: _version, onCreate: onCreate);
     } catch (ex) {
       print(ex);

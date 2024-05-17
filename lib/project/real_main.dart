@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:touch2truth/project/auth_pages/sign_in.dart';
 import 'database_management/shared_preferences_service.dart';
 import 'localization/app_localization.dart';
+
 // import 'home.dart';
 
 // Entry point for the Flutter application
@@ -34,7 +35,7 @@ void realMain() async {
       // builder: (args) => MyApp(),
       // lockScreen: MainLockScreen(),
       // enabled: sharedPrefs.isPasscodeOn ? true : false)
-  );
+      );
 }
 
 // Main Flutter application widget
@@ -79,8 +80,7 @@ class _MyAppState extends State<MyApp> {
       return Container(
         child: Center(
           child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[800]!)
-          ),
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[800]!)),
         ),
       );
     } else {
@@ -115,8 +115,10 @@ class _MyAppState extends State<MyApp> {
 
           // Theme configuration
           theme: ThemeData(
-            primarySwatch: Colors.blue, // Primary color for the app
-            hintColor: Colors.orange, // Accent color for buttons, etc.
+            primarySwatch: Colors.blue,
+            // Primary color for the app
+            hintColor: Colors.orange,
+            // Accent color for buttons, etc.
 
             // Text theme for consistent typography
             textTheme: TextTheme(
@@ -140,14 +142,17 @@ class _MyAppState extends State<MyApp> {
 
             // Customizing the app bar theme
             appBarTheme: AppBarTheme(
-              color: Colors.blue, // App bar background color
-              iconTheme: IconThemeData(color: Colors.black87), toolbarTextStyle: TextTheme(
+              color: Colors.blue,
+              // App bar background color
+              iconTheme: IconThemeData(color: Colors.black87),
+              toolbarTextStyle: TextTheme(
                 titleLarge: TextStyle(
                   fontSize: 20.0,
                   color: Colors.black87,
                   fontWeight: FontWeight.bold,
                 ),
-              ).bodyMedium, titleTextStyle: TextTheme(
+              ).bodyMedium,
+              titleTextStyle: TextTheme(
                 titleLarge: TextStyle(
                   fontSize: 20.0,
                   color: Colors.black87,
@@ -177,17 +182,18 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
 
-
           // MediaQuery settings
           builder: (context, widget) => MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1)),
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: TextScaler.linear(1)),
             child: widget!,
           ),
 
           // Initial route and localization settings
           home: SignIn(),
           // Home(),
-          locale: _locale ?? Locale("en", "US"), // Add null check and provide a default value if _locale is null
+          locale: _locale ?? Locale("en", "US"),
+          // Add null check and provide a default value if _locale is null
           localizationsDelegates: [
             // Localization delegates for supporting multiple languages
             AppLocalization.delegate,

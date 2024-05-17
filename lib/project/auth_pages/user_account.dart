@@ -10,13 +10,11 @@ class UserAccount extends StatefulWidget {
 class _UserAccountState extends State<UserAccount> {
   List<String> textList = [
     "Personal information",
-    "Account link",
     "Change password",
     "Sign out"
   ];
   List<IconData> iconList = [
     Icons.person,
-    Icons.link_sharp,
     Icons.admin_panel_settings_sharp,
     Icons.logout
   ];

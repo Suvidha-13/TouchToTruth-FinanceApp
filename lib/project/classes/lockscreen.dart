@@ -11,8 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:touch2truth/project/database_management/shared_preferences_service.dart';
 import 'package:touch2truth/project/localization/methods.dart';
 import 'package:provider/provider.dart';
-
 import '../provider.dart';
+
 import 'custom_toast.dart';
 
 class MainLockScreen extends StatelessWidget {
@@ -25,14 +25,14 @@ class MainLockScreen extends StatelessWidget {
       canCancel: false,
       didUnlocked: () => AppLock.of(context)!.didUnlock(),
       deleteButton:
-          const Icon(Icons.close, color: Color.fromRGBO(89, 129, 163, 1)),
+      const Icon(Icons.close, color: Color.fromRGBO(89, 129, 163, 1)),
       title: Padding(
         padding: const EdgeInsets.only(bottom: 10),
         child: Text(
           getTranslated(
-                context,
-                'Please Enter Passcode',
-              ) ??
+            context,
+            'Please Enter Passcode',
+          ) ??
               'Please Enter Passcode',
           style: TextStyle(
               color: Color.fromRGBO(71, 131, 192, 1),
@@ -45,9 +45,9 @@ class MainLockScreen extends StatelessWidget {
       ),
       secretsConfig: SecretsConfig(
           secretConfig: SecretConfig(
-        borderColor: Color.fromRGBO(79, 94, 120, 1),
-        enabledColor: Color.fromRGBO(89, 129, 163, 1),
-      )),
+            borderColor: Color.fromRGBO(79, 94, 120, 1),
+            enabledColor: Color.fromRGBO(89, 129, 163, 1),
+          )),
       inputButtonConfig: InputButtonConfig(
         buttonStyle: OutlinedButton.styleFrom(
           backgroundColor: Color.fromRGBO(71, 131, 192, 1),
@@ -75,9 +75,9 @@ class OtherLockScreen extends StatelessWidget {
         padding: EdgeInsets.only(bottom: 10.h),
         child: Text(
           getTranslated(
-                context,
-                'Please Enter Passcode',
-              ) ??
+            context,
+            'Please Enter Passcode',
+          ) ??
               'Please Enter Passcode',
           style: TextStyle(
               color: Color.fromRGBO(71, 131, 192, 1),
@@ -87,9 +87,9 @@ class OtherLockScreen extends StatelessWidget {
       ),
       confirmTitle: Text(
         getTranslated(
-              context,
-              'Please Re-enter Passcode',
-            ) ??
+          context,
+          'Please Re-enter Passcode',
+        ) ??
             'Please Re-enter Passcode',
         style: TextStyle(
             color: Color.fromRGBO(71, 131, 192, 1),
@@ -99,15 +99,15 @@ class OtherLockScreen extends StatelessWidget {
       confirmation: true,
       inputController: inputController,
       deleteButton:
-          const Icon(Icons.close, color: Color.fromRGBO(71, 131, 192, 1)),
+      const Icon(Icons.close, color: Color.fromRGBO(71, 131, 192, 1)),
       screenLockConfig: const ScreenLockConfig(
         backgroundColor: Color.fromRGBO(210, 234, 251, 1),
       ),
       secretsConfig: SecretsConfig(
           secretConfig: SecretConfig(
-        borderColor: Color.fromRGBO(79, 94, 120, 1),
-        enabledColor: Color.fromRGBO(89, 129, 163, 1),
-      )),
+            borderColor: Color.fromRGBO(79, 94, 120, 1),
+            enabledColor: Color.fromRGBO(89, 129, 163, 1),
+          )),
       inputButtonConfig: InputButtonConfig(
         buttonStyle: OutlinedButton.styleFrom(
           backgroundColor: Color.fromRGBO(71, 131, 192, 1),
@@ -117,7 +117,7 @@ class OtherLockScreen extends StatelessWidget {
       didConfirmed: (passCode) {
         sharedPrefs.passcodeScreenLock = passCode;
         Navigator.pop(context);
-      customToast(context,'Passcode has been enabled');
+        customToast(context,'Passcode has been enabled');
       },
       cancelButton: TextButton(
           onPressed: () {

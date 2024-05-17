@@ -111,9 +111,12 @@ class _ReportBodyState extends State<ReportBody> {
               builder: (BuildContext context,
                   AsyncSnapshot<List<InputModel>> snapshot) {
                 connectionUI(snapshot);
-                if (snapshot.data == null ||
-                    snapshot.connectionState == ConnectionState.waiting) {
-                  return SizedBox();
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator(); // Or some other loading indicator
+                } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Text('No data available'); // Or any other widget to indicate no data
                 } else {
                   double yearAmount = 0;
                   DateTime date(int duration) =>
@@ -128,11 +131,11 @@ class _ReportBodyState extends State<ReportBody> {
                       List<InputModel> data, String type) {
                     return data
                         .map((data) {
-                          if (data.type == type &&
-                              data.category == widget.category) {
-                            return inputModel(data);
-                          }
-                        })
+                      if (data.type == type &&
+                          data.category == widget.category) {
+                        return inputModel(data);
+                      }
+                    })
                         .where((element) => element != null)
                         .toList()
                         .cast<InputModel>();
@@ -143,21 +146,22 @@ class _ReportBodyState extends State<ReportBody> {
                       : sortByCategory(snapshot.data!, 'Expense');
 
                   List<InputModel> transactionsYearly = (transactions
-                          .map((data) {
-                            DateTime dateSelectedDT =
-                                DateFormat('dd/MM/yyyy').parse(data.date!);
+                      .map((data) {
+                    DateTime dateSelectedDT =
+                    DateFormat('dd/MM/yyyy').parse(data.date!);
 
-                            if (dateSelectedDT.isAfter(startOfThisYear
-                                    .subtract(Duration(days: 1))) &&
-                                dateSelectedDT
-                                    .isBefore(DateTime(todayDT.year, 12, 31))) {
-                              return inputModel(data);
-                            }
-                          })
-                          .where((element) => element != null)
-                          .toList())
+                    if (dateSelectedDT.isAfter(startOfThisYear
+                        .subtract(Duration(days: 1))) &&
+                        dateSelectedDT
+                            .isBefore(DateTime(todayDT.year, 12, 31))) {
+                      return inputModel(data);
+                    }
+                  })
+                      .where((element) => element != null)
+                      .toList())
                       .cast<InputModel>();
 
+                  print('Transactions Yearly: ${transactionsYearly.length}');
                   if (transactionsYearly.length > 0) {
                     for (InputModel? transaction in transactionsYearly) {
                       yearAmount = yearAmount + transaction!.amount!;
@@ -168,8 +172,9 @@ class _ReportBodyState extends State<ReportBody> {
                       String month, DateTime date, int days) {
                     double monthAmount = 0;
                     for (InputModel transaction in transactionsYearly) {
+                      print('Transaction: $transaction');
                       DateTime dateSelectedDT =
-                          DateFormat('dd/MM/yyyy').parse(transaction.date!);
+                      DateFormat('dd/MM/yyyy').parse(transaction.date!);
 
                       if (dateSelectedDT.isAfter(date) &&
                           dateSelectedDT.isBefore(
@@ -178,36 +183,53 @@ class _ReportBodyState extends State<ReportBody> {
                         monthAmount = monthAmount + transaction.amount!;
                       }
                     }
+                    print('Month Amount: $monthAmount');
                     return MonthAmount(month, monthAmount);
                   }
 
                   List<MonthAmount>? monthBasedTransactionList =
-                      isLeapYear(year)
-                          ? []
-                          : [
-                              monthBasedTransaction(
-                                  'Jan',
-                                  startOfThisYear.subtract(Duration(days: 1)),
-                                  30),
-                              monthBasedTransaction('Feb', date(30), 58),
-                              monthBasedTransaction('Mar', date(58), 89),
-                              monthBasedTransaction('Apr', date(89), 119),
-                              monthBasedTransaction('May', date(119), 150),
-                              monthBasedTransaction('Jun', date(150), 180),
-                              monthBasedTransaction('Jul', date(180), 211),
-                              monthBasedTransaction('Aug', date(211), 242),
-                              monthBasedTransaction('Sep', date(242), 272),
-                              monthBasedTransaction('Oct', date(272), 302),
-                              monthBasedTransaction('Nov', date(302), 333),
-                              monthBasedTransaction('Dec', date(333), 364),
-                            ];
+                  isLeapYear(year)
+                      ? [
+                    monthBasedTransaction('Jan', startOfThisYear.subtract(Duration(days: 1)), 30),
+                    monthBasedTransaction('Feb', date(30), 59), // 59 days in leap year
+                    monthBasedTransaction('Mar', date(59), 90),
+                    monthBasedTransaction('Apr', date(90), 120),
+                    monthBasedTransaction('May', date(120), 151),
+                    monthBasedTransaction('Jun', date(151), 181),
+                    monthBasedTransaction('Jul', date(181), 212),
+                    monthBasedTransaction('Aug', date(212), 243),
+                    monthBasedTransaction('Sep', date(243), 273),
+                    monthBasedTransaction('Oct', date(273), 303),
+                    monthBasedTransaction('Nov', date(303), 334),
+                    monthBasedTransaction('Dec', date(334), 365),
+                  ]
+                      : [
+                    monthBasedTransaction(
+                        'Jan',
+                        startOfThisYear.subtract(Duration(days: 1)),
+                        30),
+                    monthBasedTransaction('Feb', date(30), 58),
+                    monthBasedTransaction('Mar', date(58), 89),
+                    monthBasedTransaction('Apr', date(89), 119),
+                    monthBasedTransaction('May', date(119), 150),
+                    monthBasedTransaction('Jun', date(150), 180),
+                    monthBasedTransaction('Jul', date(180), 211),
+                    monthBasedTransaction('Aug', date(211), 242),
+                    monthBasedTransaction('Sep', date(242), 272),
+                    monthBasedTransaction('Oct', date(272), 302),
+                    monthBasedTransaction('Nov', date(302), 333),
+                    monthBasedTransaction('Dec', date(333), 364),
+                  ];
+                  double maximumMonthAmount = 0; // Initialize with a default value
 
-                  double maximumMonthAmount =
-                      monthBasedTransactionList[0].amount;
-                  for (int i = 0; i < monthBasedTransactionList.length; i++) {
-                    if (monthBasedTransactionList[i].amount >
-                        maximumMonthAmount) {
-                      maximumMonthAmount = monthBasedTransactionList[i].amount;
+                  print('monthBasedTransactionList Length: ${monthBasedTransactionList?.length}');
+                  if (monthBasedTransactionList.isNotEmpty) {
+                    maximumMonthAmount = monthBasedTransactionList[0].amount;
+
+                    for (int i = 1; i < monthBasedTransactionList.length; i++) {
+                      if (monthBasedTransactionList[i].amount > maximumMonthAmount) {
+                        maximumMonthAmount = monthBasedTransactionList[i].amount;
+                      }
                     }
                   }
 
@@ -219,9 +241,9 @@ class _ReportBodyState extends State<ReportBody> {
                           height: 280.h,
                           child: SfCartesianChart(
                             primaryXAxis: CategoryAxis(
-                                // placeLabelsNearAxisLine: true,
-                                // edgeLabelPlacement: EdgeLabelPlacement.none,
-                                // majorTickLines: MajorTickLines(size: 5, width: 1),
+                              // placeLabelsNearAxisLine: true,
+                              // edgeLabelPlacement: EdgeLabelPlacement.none,
+                              // majorTickLines: MajorTickLines(size: 5, width: 1),
                                 axisLine: AxisLine(
                                   width: 3.h,
                                 ),
@@ -240,80 +262,83 @@ class _ReportBodyState extends State<ReportBody> {
                                   width: 4.h,
                                 ),
                                 majorTickLines: MajorTickLines(size: 5.sp)),
+                            series: _getGradientAreaSeries(this.widget.type, monthBasedTransactionList)
+                                .cast<CartesianSeries<dynamic, dynamic>>(),
+
                             // series: _getGradientAreaSeries(
                             //     this.widget.type, monthBasedTransactionList),
                             onMarkerRender: (MarkerRenderArgs args) {
                               if (this.widget.type == 'Income') {
                                 if (args.pointIndex == 0) {
                                   args.color =
-                                      const Color.fromRGBO(9, 110, 16, 1);
+                                  const Color.fromRGBO(9, 110, 16, 1);
                                 } else if (args.pointIndex == 1) {
                                   args.color =
-                                      const Color.fromRGBO(19, 134, 13, 1);
+                                  const Color.fromRGBO(19, 134, 13, 1);
                                 } else if (args.pointIndex == 2) {
                                   args.color =
-                                      const Color.fromRGBO(55, 171, 49, 1);
+                                  const Color.fromRGBO(55, 171, 49, 1);
                                 } else if (args.pointIndex == 3) {
                                   args.color =
-                                      const Color.fromRGBO(77, 213, 70, 1);
+                                  const Color.fromRGBO(77, 213, 70, 1);
                                 } else if (args.pointIndex == 4) {
                                   args.color =
-                                      const Color.fromRGBO(134, 213, 70, 1);
+                                  const Color.fromRGBO(134, 213, 70, 1);
                                 } else if (args.pointIndex == 5) {
                                   args.color =
-                                      const Color.fromRGBO(156, 222, 103, 1);
+                                  const Color.fromRGBO(156, 222, 103, 1);
                                 } else if (args.pointIndex == 6) {
                                   args.color =
-                                      const Color.fromRGBO(153, 249, 172, 1);
+                                  const Color.fromRGBO(153, 249, 172, 1);
                                 } else if (args.pointIndex == 7) {
                                   args.color =
-                                      const Color.fromRGBO(189, 235, 120, 1);
+                                  const Color.fromRGBO(189, 235, 120, 1);
                                 } else if (args.pointIndex == 8) {
                                   args.color =
-                                      const Color.fromRGBO(177, 249, 191, 1);
+                                  const Color.fromRGBO(177, 249, 191, 1);
                                 } else if (args.pointIndex == 9) {
                                   args.color =
-                                      const Color.fromRGBO(217, 241, 179, 1);
+                                  const Color.fromRGBO(217, 241, 179, 1);
                                 } else if (args.pointIndex == 10) {
                                   args.color =
-                                      const Color.fromRGBO(235, 246, 199, 1);
+                                  const Color.fromRGBO(235, 246, 199, 1);
                                 } else if (args.pointIndex == 11) {
                                   args.color = Colors.white;
                                 }
                               } else {
                                 if (args.pointIndex == 0) {
                                   args.color =
-                                      const Color.fromRGBO(159, 16, 32, 1);
+                                  const Color.fromRGBO(159, 16, 32, 1);
                                 } else if (args.pointIndex == 1) {
                                   args.color =
-                                      const Color.fromRGBO(197, 71, 84, 1);
+                                  const Color.fromRGBO(197, 71, 84, 1);
                                 } else if (args.pointIndex == 2) {
                                   args.color =
-                                      const Color.fromRGBO(207, 124, 168, 1);
+                                  const Color.fromRGBO(207, 124, 168, 1);
                                 } else if (args.pointIndex == 3) {
                                   args.color =
-                                      const Color.fromRGBO(219, 128, 161, 1);
+                                  const Color.fromRGBO(219, 128, 161, 1);
                                 } else if (args.pointIndex == 4) {
                                   args.color =
-                                      const Color.fromRGBO(213, 143, 151, 1);
+                                  const Color.fromRGBO(213, 143, 151, 1);
                                 } else if (args.pointIndex == 5) {
                                   args.color =
-                                      const Color.fromRGBO(226, 157, 126, 1);
+                                  const Color.fromRGBO(226, 157, 126, 1);
                                 } else if (args.pointIndex == 6) {
                                   args.color =
-                                      const Color.fromRGBO(230, 168, 138, 1);
+                                  const Color.fromRGBO(230, 168, 138, 1);
                                 } else if (args.pointIndex == 7) {
                                   args.color =
-                                      const Color.fromRGBO(221, 176, 108, 1);
+                                  const Color.fromRGBO(221, 176, 108, 1);
                                 } else if (args.pointIndex == 8) {
                                   args.color =
-                                      const Color.fromRGBO(222, 187, 97, 1);
+                                  const Color.fromRGBO(222, 187, 97, 1);
                                 } else if (args.pointIndex == 9) {
                                   args.color =
-                                      const Color.fromRGBO(250, 204, 160, 1);
+                                  const Color.fromRGBO(250, 204, 160, 1);
                                 } else if (args.pointIndex == 10) {
                                   args.color =
-                                      const Color.fromRGBO(248, 219, 191, 1);
+                                  const Color.fromRGBO(248, 219, 191, 1);
                                 } else if (args.pointIndex == 11) {
                                   args.color = Colors.white;
                                 }
@@ -332,18 +357,18 @@ class _ReportBodyState extends State<ReportBody> {
                           create: (context) => ChangeSelectedDate(),
                           child: Selector<ChangeSelectedDate, String?>(
                               selector: (_, changeSelectedDate) =>
-                                  changeSelectedDate.selectedReportDate,
+                              changeSelectedDate.selectedReportDate,
                               builder: (context, selectedAnalysisDate, child) {
                                 selectedAnalysisDate ??= widget.selectedDate;
 
                                 //selectedTransactions is data sorted by category and selectedDate
                                 List<InputModel> selectedTransactions =
-                                    filterData(context, transactions,
-                                        selectedAnalysisDate);
+                                filterData(context, transactions,
+                                    selectedAnalysisDate);
                                 double totalAmount = 0;
                                 if (selectedTransactions.length > 0) {
                                   for (InputModel? transaction
-                                      in selectedTransactions) {
+                                  in selectedTransactions) {
                                     totalAmount =
                                         totalAmount + transaction!.amount!;
                                   }
@@ -355,15 +380,15 @@ class _ReportBodyState extends State<ReportBody> {
                                       Padding(
                                         padding: EdgeInsets.only(
                                             left:
-                                                totalAmount.toString().length <
-                                                        16
-                                                    ? 10.w
-                                                    : 6.w,
+                                            totalAmount.toString().length <
+                                                16
+                                                ? 10.w
+                                                : 6.w,
                                             right:
-                                                totalAmount.toString().length <
-                                                        15
-                                                    ? 20.h
-                                                    : 10.h,
+                                            totalAmount.toString().length <
+                                                15
+                                                ? 20.h
+                                                : 10.h,
                                             top: 25.h),
                                         child: Row(
                                           children: [
@@ -374,18 +399,18 @@ class _ReportBodyState extends State<ReportBody> {
                                               '${format(totalAmount.toDouble())} $currency',
                                               style: GoogleFonts.aBeeZee(
                                                   fontSize: format(totalAmount
-                                                                  .toDouble())
-                                                              .toString()
-                                                              .length >
-                                                          18
+                                                      .toDouble())
+                                                      .toString()
+                                                      .length >
+                                                      18
                                                       ? 14.sp
                                                       : format(totalAmount
-                                                                      .toDouble())
-                                                                  .toString()
-                                                                  .length >
-                                                              14
-                                                          ? 17.sp
-                                                          : 20.sp,
+                                                      .toDouble())
+                                                      .toString()
+                                                      .length >
+                                                      14
+                                                      ? 17.sp
+                                                      : 20.sp,
                                                   fontStyle: FontStyle.italic,
                                                   fontWeight: FontWeight.bold,
                                                   color: widget.color),
@@ -403,11 +428,11 @@ class _ReportBodyState extends State<ReportBody> {
                                         child: ListView.builder(
                                             shrinkWrap: true,
                                             itemCount:
-                                                selectedTransactions.length,
+                                            selectedTransactions.length,
                                             itemBuilder: (context, int) {
                                               return GestureDetector(
                                                 behavior:
-                                                    HitTestBehavior.translucent,
+                                                HitTestBehavior.translucent,
                                                 onTap: () {
                                                   Navigator.push(
                                                       context,
@@ -415,88 +440,89 @@ class _ReportBodyState extends State<ReportBody> {
                                                           builder: (context) =>
                                                               Edit(
                                                                 inputModel:
-                                                                    selectedTransactions[
-                                                                        int],
+                                                                selectedTransactions[
+                                                                int],
                                                                 categoryIcon:
-                                                                    widget.icon,
+                                                                widget.icon,
                                                               ))).then(
-                                                      (value) => Provider.of<
-                                                                  InputModelList>(
-                                                              context,
-                                                              listen: false)
+                                                          (value) => Provider.of<
+                                                          InputModelList>(
+                                                          context,
+                                                          listen: false)
                                                           .changeInputModelList());
                                                 },
                                                 child: SwipeActionCell(
                                                   backgroundColor:
-                                                      Colors.transparent,
+                                                  Colors.transparent,
                                                   key: ObjectKey(
                                                       selectedTransactions[
-                                                          int]),
+
+                                                      int]),
                                                   // performsFirstActionWithFullSwipe:
-                                                  //     true,
+                                                  // true,
                                                   trailingActions: <
                                                       SwipeAction>[
                                                     SwipeAction(
                                                         title: getTranslated(context, 'Delete') ?? 'Delete',
                                                         onTap:
                                                             (CompletionHandler
-                                                                handler) async {
+                                                        handler) async {
                                                           Platform.isIOS
                                                               ? iosDialog(
-                                                                  context,
-                                                                  'Are you sure you want to delete this transaction?',
-                                                                  'Delete',
+                                                              context,
+                                                              'Are you sure you want to delete this transaction?',
+                                                              'Delete',
                                                                   () async {
-                                                                  DB.delete(
-                                                                      selectedTransactions[
-                                                                              int]
-                                                                          .id!);
-                                                                  await handler(
-                                                                      true);
-                                                                  Provider.of<InputModelList>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .changeInputModelList();
-                                                                  customToast(
-                                                                      context,
-                                                                      'Transaction has been deleted');
-                                                                })
+                                                                DB.delete(
+                                                                    selectedTransactions[
+                                                                    int]
+                                                                        .id!);
+                                                                await handler(
+                                                                    true);
+                                                                Provider.of<InputModelList>(
+                                                                    context,
+                                                                    listen:
+                                                                    false)
+                                                                    .changeInputModelList();
+                                                                customToast(
+                                                                    context,
+                                                                    'Transaction has been deleted');
+                                                              })
                                                               : androidDialog(
-                                                                  context,
-                                                                  'Are you sure you want to delete this transaction?',
-                                                                  'Delete',
+                                                              context,
+                                                              'Are you sure you want to delete this transaction?',
+                                                              'Delete',
                                                                   () async {
-                                                                  DB.delete(
-                                                                      selectedTransactions[
-                                                                              int]
-                                                                          .id!);
-                                                                  await handler(
-                                                                      true);
-                                                                  Provider.of<InputModelList>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .changeInputModelList();
-                                                                  customToast(
-                                                                      context,
-                                                                      'Transaction has been deleted');
-                                                                });
+                                                                DB.delete(
+                                                                    selectedTransactions[
+                                                                    int]
+                                                                        .id!);
+                                                                await handler(
+                                                                    true);
+                                                                Provider.of<InputModelList>(
+                                                                    context,
+                                                                    listen:
+                                                                    false)
+                                                                    .changeInputModelList();
+                                                                customToast(
+                                                                    context,
+                                                                    'Transaction has been deleted');
+                                                              });
                                                         },
                                                         color: red),
                                                     SwipeAction(
                                                         title: getTranslated(context, 'Add') ?? 'Add',
                                                         onTap:
                                                             (CompletionHandler
-                                                                handler) {
+                                                        handler) {
                                                           var model =
-                                                              selectedTransactions[
-                                                                  int];
+                                                          selectedTransactions[
+                                                          int];
                                                           model.id = null;
                                                           DB.insert(model);
                                                           Provider.of<InputModelList>(
-                                                                  context,
-                                                                  listen: false)
+                                                              context,
+                                                              listen: false)
                                                               .changeInputModelList();
                                                           customToast(context,
                                                               'Transaction has been updated');
@@ -513,23 +539,23 @@ class _ReportBodyState extends State<ReportBody> {
                                                       children: [
                                                         Text(
                                                             DateFormat(sharedPrefs
-                                                                    .dateFormat)
+                                                                .dateFormat)
                                                                 .format(DateFormat(
-                                                                        'dd/MM/yyyy')
-                                                                    .parse(selectedTransactions[
-                                                                            int]
-                                                                        .date!)),
+                                                                'dd/MM/yyyy')
+                                                                .parse(selectedTransactions[
+                                                            int]
+                                                                .date!)),
                                                             style: GoogleFonts
                                                                 .aBeeZee(
-                                                                    fontSize:
-                                                                        17.sp)),
+                                                                fontSize:
+                                                                17.sp)),
                                                         Spacer(),
                                                         Text(
                                                             '${format(selectedTransactions[int].amount!)} $currency',
                                                             style: GoogleFonts
                                                                 .aBeeZee(
-                                                                    fontSize:
-                                                                        18.5.sp)),
+                                                                fontSize:
+                                                                18.5.sp)),
                                                         SizedBox(
                                                           width: 15.w,
                                                         ),
@@ -557,74 +583,54 @@ class _ReportBodyState extends State<ReportBody> {
   }
 }
 
-
-List<CartesianSeries<dynamic, dynamic>> _getConvertedSeries(String type, List<MonthAmount> monthAmountList) {
-  List<ChartSeries<MonthAmount, String>> originalSeries = _getGradientAreaSeries(type, monthAmountList);
-
-  // Convert original series to the desired type
-  List<CartesianSeries<dynamic, dynamic>> convertedSeries = originalSeries.map((series) {
-    // You can adjust this conversion as needed
-    return series as CartesianSeries<dynamic, dynamic>;
-  }).toList();
-
-  return convertedSeries;
-}
-
 /// Returns the list of spline area series with horizontal gradient.
 List<ChartSeries<MonthAmount, String>> _getGradientAreaSeries(
-    String type, List<MonthAmount> monthAmountList) {
-  // final List<Color> color = <Color>[];
-  // color.add(Colors.blue[200]!);
-  // color.add(Colors.orange[200]!);
-
-  // final List<double> stops = <double>[];
-  // stops.add(0.2);
-  // stops.add(0.7);
-
+    String type, List<MonthAmount>? monthAmountList) {
+  print('Month Amount List Length: ${monthAmountList?.length}');
   return <ChartSeries<MonthAmount, String>>[
     SplineAreaSeries<MonthAmount, String>(
       /// To set the gradient colors for border here.
       borderGradient: type == 'Income'
           ? const LinearGradient(colors: <Color>[
-              Color.fromRGBO(56, 135, 5, 1),
-              Color.fromRGBO(159, 196, 135, 1)
-            ], stops: <double>[
-              0.2,
-              0.9
-            ])
+        Color.fromRGBO(56, 135, 5, 1),
+        Color.fromRGBO(159, 196, 135, 1)
+      ], stops: <double>[
+        0.2,
+        0.9
+      ])
           : const LinearGradient(colors: <Color>[
-              Color.fromRGBO(212, 126, 166, 1),
-              Color.fromRGBO(222, 187, 104, 1)
-            ], stops: <double>[
-              0.2,
-              0.9
-            ]),
+        Color.fromRGBO(212, 126, 166, 1),
+        Color.fromRGBO(222, 187, 104, 1)
+      ], stops: <double>[
+        0.2,
+        0.9
+      ]),
 
       /// To set the gradient colors for series.
       gradient: type == 'Income'
           ? const LinearGradient(colors: <Color>[
-              Color.fromRGBO(101, 181, 60, 1),
-              Color.fromRGBO(139, 194, 72, 1),
-              Color.fromRGBO(203, 241, 119, 0.9)
-            ], stops: <double>[
-              0.2,
-              0.5,
-              0.9
-            ])
+        Color.fromRGBO(101, 181, 60, 1),
+        Color.fromRGBO(139, 194, 72, 1),
+        Color.fromRGBO(203, 241, 119, 0.9)
+      ], stops: <double>[
+        0.2,
+        0.5,
+        0.9
+      ])
           : const LinearGradient(colors: <Color>[
-              Color.fromRGBO(224, 139, 207, 0.9),
-              Color.fromRGBO(255, 232, 149, 0.9)
-            ], stops: <double>[
-              0.2,
-              0.9
-            ]),
+        Color.fromRGBO(224, 139, 207, 0.9),
+        Color.fromRGBO(255, 232, 149, 0.9)
+      ], stops: <double>[
+        0.2,
+        0.9
+      ]),
       borderWidth: 2.5.w,
       markerSettings: MarkerSettings(
         isVisible: true,
         height: 8.h,
         width: 8.h,
         borderColor:
-            type == 'Income' ? Color.fromRGBO(161, 171, 35, 1) : Colors.white,
+        type == 'Income' ? Color.fromRGBO(161, 171, 35, 1) : Colors.white,
         borderWidth: 2.w,
       ),
       borderDrawMode: BorderDrawMode.all,
